@@ -59,9 +59,6 @@
     </div>
 
     <script>
-        const assistantId = "asst_LxXzE2wd8xEo1hnYXhgSH5Zl";
-        const apiUrl = `https://api.openai.com/v1/assistants/${assistantId}`;
-
         document.getElementById("send-button").addEventListener("click", async () => {
             const userInput = document.getElementById("user-input").value;
             if (!userInput) return;
@@ -76,24 +73,18 @@
             // Clear input field
             document.getElementById("user-input").value = "";
 
-            // Call chatbot API
+            // Call backend API
             try {
-                const response = await fetch(apiUrl, {
-                    method: "POST",
+                const response = await fetch('/chat', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer YOUR_API_KEY"
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        input: {
-                            type: "text",
-                            content: userInput
-                        }
-                    })
+                    body: JSON.stringify({ userMessage: userInput }),
                 });
 
                 if (!response.ok) {
-                    throw new Error("API request failed");
+                    throw new Error("Error fetching chatbot response");
                 }
 
                 const data = await response.json();
@@ -101,7 +92,7 @@
                 // Display bot's response
                 const botMessageDiv = document.createElement("div");
                 botMessageDiv.classList.add("chat-message", "bot-message");
-                botMessageDiv.textContent = data.output.content;
+                botMessageDiv.textContent = data.reply;
                 messagesDiv.appendChild(botMessageDiv);
             } catch (error) {
                 console.error("Error:", error);
