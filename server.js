@@ -40,4 +40,6 @@ app.post('/chat', async (req, res) => {
         res.json({ reply: assistantReply });
     } catch (error) {
         console.error("Error:", error);
-        res.status(500).json({ error: "An error
+        res.status(500).json({ error: "An error occurred while processing your request." });
+    }
+});
